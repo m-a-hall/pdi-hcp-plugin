@@ -14,3 +14,6 @@ hs_err_pid*
 /test-lib/
 /lib/
 /bin/
+/lib-provided/
+.DS_Store
+*.iml
