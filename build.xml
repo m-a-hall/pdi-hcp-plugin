@@ -22,7 +22,7 @@ explicitly covering such access.
 <project name="pdi-hcp-plugin" default="default" basedir="." xmlns:ivy="antlib:org.apache.ivy.ant">
   <property name="bin.dir" value="${basedir}/bin"/>
   <property name="stage.dir" value="${bin.dir}/stage"/>
-  <property name="approot.stage.dir" value="${stage.dir}/hdi-hcp-plugin"/>
+  <property name="approot.stage.dir" value="${stage.dir}/pdi-hcp-plugin"/>
 
   <property name="subfloor-ee.parent.file" value="subfloor-pkg.xml" />
   <import file="build-res/subfloor-ee.xml" />

@@ -141,7 +141,7 @@ public class HCPConnection extends Variables implements Cloneable {
    *           In case something goes wrong (so it usually doesn't return false)
    */
   public boolean test() throws Exception {
-    throw new Exception("Test funcationality not yet implemented: unclear API");
+    throw new Exception("Test functionality not yet implemented: unclear API");
   }
 
   public String getRestUrl(VariableSpace space) {
@@ -159,8 +159,9 @@ public class HCPConnection extends Variables implements Cloneable {
       url.append("http://");
     }
 
-    url.append(space.environmentSubstitute(tenant)).append('.');
+    // correct is namespace.tenant.server
     url.append(space.environmentSubstitute(namespace)).append('.');
+    url.append(space.environmentSubstitute(tenant)).append('.');
     url.append(space.environmentSubstitute(server));
 
     String realPort = space.environmentSubstitute(port);
