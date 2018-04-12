@@ -15,5 +15,6 @@ hs_err_pid*
 /lib/
 /bin/
 /lib-provided/
+/target/
 .DS_Store
 *.iml
