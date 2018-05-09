@@ -20,7 +20,6 @@
  *
  ******************************************************************************/
 
-
 package org.pentaho.di.hcp.shared;
 
 import com.sun.jersey.api.client.ClientResponse;
@@ -58,7 +57,7 @@ public class HCPConnectionOperationUtils {
       BufferedOutputStream outputStream, LogChannelInterface log ) throws IOException {
 
     // if outputStream is null then just get metadata (i.e. perform a HEAD opp)
-    WebResource webResource = client.resource( requestURL );
+    WebResource webResource = client.resource( requestURL.trim() );
     WebResource.Builder builder = webResource.getRequestBuilder().header( "Authorization", authorization );
 
     if ( log != null && log.isDebug() ) {
@@ -101,7 +100,7 @@ public class HCPConnectionOperationUtils {
   public static HCPListResponse performList( ApacheHttpClient client, String requestURL, String authorization,
       LogChannelInterface log ) throws Exception {
 
-    WebResource webResource = client.resource( requestURL );
+    WebResource webResource = client.resource( requestURL.trim() );
     WebResource.Builder builder = webResource.getRequestBuilder().header( "Authorization", authorization );
 
     if ( log != null && log.isDebug() ) {
@@ -131,7 +130,7 @@ public class HCPConnectionOperationUtils {
 
   public static HCPDeleteResponse performDelete( ApacheHttpClient client, String requestURL, String authorization,
       LogChannelInterface log ) {
-    WebResource webResource = client.resource( requestURL );
+    WebResource webResource = client.resource( requestURL.trim() );
     WebResource.Builder builder = webResource.getRequestBuilder().header( "Authorization", authorization );
 
     if ( log != null && log.isDebug() ) {
@@ -150,7 +149,7 @@ public class HCPConnectionOperationUtils {
 
   public static HCPCreateResponse performCreate( ApacheHttpClient client, String requestURL, String authorization,
       BufferedInputStream inputStream, LogChannelInterface log ) {
-    WebResource webResource = client.resource( requestURL );
+    WebResource webResource = client.resource( requestURL.trim() );
     WebResource.Builder builder = webResource.getRequestBuilder().header( "Authorization", authorization );
 
     if ( log != null && log.isDebug() ) {
@@ -165,6 +164,40 @@ public class HCPConnectionOperationUtils {
     if ( createResponse.getStatus() == BaseHCPResponse.Status.CREATED ) {
       populateMinimumSystemMetadata( createResponse, response );
       populateCreateMetadata( createResponse, response );
+    }
+
+    return createResponse;
+  }
+
+  public static HCPCreateResponse performAddCustomMetadata( ApacheHttpClient client, String requestURL,
+      String authorization, InputStream inputStream, LogChannelInterface log ) {
+
+    WebResource webResource = client.resource( requestURL.trim() );
+    WebResource.Builder builder = webResource.getRequestBuilder().header( "Authorization", authorization );
+
+    ClientResponse response = builder.type( MediaType.TEXT_XML ).put( ClientResponse.class, inputStream );
+    HCPCreateResponse createResponse = new HCPCreateResponse();
+    determineRequestStatus( createResponse, response );
+    if ( createResponse.getStatus() == BaseHCPResponse.Status.CREATED
+        || createResponse.getStatus() == BaseHCPResponse.Status.OK ) {
+      populateMinimumSystemMetadata( createResponse, response );
+    }
+
+    return createResponse;
+  }
+
+  public static HCPCreateResponse performAddSystemMetadata( ApacheHttpClient client, String requestURL,
+      String authorization, LogChannelInterface log ) {
+
+    WebResource webResource = client.resource( requestURL.trim() );
+    WebResource.Builder builder = webResource.getRequestBuilder().header( "Authorization", authorization );
+
+    ClientResponse response = builder.type( MediaType.TEXT_XML ).post( ClientResponse.class );
+    HCPCreateResponse createResponse = new HCPCreateResponse();
+    determineRequestStatus( createResponse, response );
+    if ( createResponse.getStatus() == BaseHCPResponse.Status.CREATED
+        || createResponse.getStatus() == BaseHCPResponse.Status.OK ) {
+      populateMinimumSystemMetadata( createResponse, response );
     }
 
     return createResponse;
@@ -217,7 +250,7 @@ public class HCPConnectionOperationUtils {
 
   private static BaseHCPResponse checkTargetExistence( ApacheHttpClient client, String requestURL,
       String authorization ) {
-    WebResource webResource = client.resource( requestURL );
+    WebResource webResource = client.resource( requestURL.trim() );
     WebResource.Builder builder = webResource.getRequestBuilder().header( "Authorization", authorization );
     ClientResponse response = builder.type( MediaType.APPLICATION_OCTET_STREAM_TYPE ).head();
 
@@ -225,20 +258,6 @@ public class HCPConnectionOperationUtils {
     determineRequestStatus( baseHCPResponse, response );
 
     return baseHCPResponse;
-  }
-
-  private static HCPCreateResponse performTargetFileUpdate( ApacheHttpClient client, String requestURL,
-      String authorization, BufferedInputStream inputStream ) {
-
-    WebResource webResource = client.resource( requestURL );
-    WebResource.Builder builder = webResource.getRequestBuilder().header( "Authorization", authorization );
-    ClientResponse
-        response =
-        builder.type( MediaType.APPLICATION_OCTET_STREAM_TYPE ).post( ClientResponse.class, inputStream );
-    HCPCreateResponse createResponse = new HCPCreateResponse();
-    determineRequestStatus( createResponse, response );
-
-    return createResponse;
   }
 
   protected static void determineRequestStatus( BaseHCPResponse hcpResponse, ClientResponse response ) {

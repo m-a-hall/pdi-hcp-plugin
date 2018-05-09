@@ -68,8 +68,6 @@ public class HCPPutDialog extends BaseStepDialog implements StepDialogInterface 
   private TextVar wPrependPathField;
   private TextVar wBufferSizeField;
   private Button wUpdate;
-  private Text wResponseCodeField;
-  private Text wResponseTimeField;
 
   private HCPPutMeta input;
 
@@ -80,7 +78,7 @@ public class HCPPutDialog extends BaseStepDialog implements StepDialogInterface 
     input = (HCPPutMeta) in;
   }
 
-  public String open() {
+  @Override public String open() {
     Shell parent = getParent();
     Display display = parent.getDisplay();
 
@@ -326,46 +324,6 @@ public class HCPPutDialog extends BaseStepDialog implements StepDialogInterface 
     wBufferSizeField.setLayoutData( fd );
     lastControl = wBufferSizeField;
 
-    // Response code field
-    //
-    /* Label wlResponseCodeField = new Label( shell, SWT.RIGHT );
-    wlResponseCodeField.setText( BaseMessages.getString( PKG, "HCPPutDialog.ResponseCodeField.Label" ) );
-    props.setLook( wlResponseCodeField );
-    FormData fdlResponseCodeField = new FormData();
-    fdlResponseCodeField.left = new FormAttachment( 0, 0 );
-    fdlResponseCodeField.right = new FormAttachment( middle, -margin );
-    fdlResponseCodeField.top = new FormAttachment( lastControl, margin );
-    wlResponseCodeField.setLayoutData( fdlResponseCodeField );
-    wResponseCodeField = new Text( shell, SWT.SINGLE | SWT.LEFT | SWT.BORDER );
-    props.setLook( wResponseCodeField );
-    wResponseCodeField.addModifyListener( lsMod );
-    FormData fdResponseCodeField = new FormData();
-    fdResponseCodeField.left = new FormAttachment( middle, 0 );
-    fdResponseCodeField.top = new FormAttachment( lastControl, margin );
-    fdResponseCodeField.right = new FormAttachment( 100, 0 );
-    wResponseCodeField.setLayoutData( fdResponseCodeField );
-    lastControl = wResponseCodeField; */
-
-    // Response time field
-    //
-    /* Label wlResponseTimeField = new Label( shell, SWT.RIGHT );
-    wlResponseTimeField.setText( BaseMessages.getString( PKG, "HCPPutDialog.ResponseTimeField.Label" ) );
-    props.setLook( wlResponseTimeField );
-    FormData fdlResponseTimeField = new FormData();
-    fdlResponseTimeField.left = new FormAttachment( 0, 0 );
-    fdlResponseTimeField.right = new FormAttachment( middle, -margin );
-    fdlResponseTimeField.top = new FormAttachment( lastControl, margin );
-    wlResponseTimeField.setLayoutData( fdlResponseTimeField );
-    wResponseTimeField = new Text( shell, SWT.SINGLE | SWT.LEFT | SWT.BORDER );
-    props.setLook( wResponseTimeField );
-    wResponseTimeField.addModifyListener( lsMod );
-    FormData fdResponseTimeField = new FormData();
-    fdResponseTimeField.left = new FormAttachment( middle, 0 );
-    fdResponseTimeField.top = new FormAttachment( lastControl, margin );
-    fdResponseTimeField.right = new FormAttachment( 100, 0 );
-    wResponseTimeField.setLayoutData( fdResponseTimeField );
-    lastControl = wResponseTimeField; */
-
     wOK = new Button( shell, SWT.PUSH );
     wOK.setText( BaseMessages.getString( PKG, "System.Button.OK" ) );
     wCancel = new Button( shell, SWT.PUSH );
@@ -437,8 +395,6 @@ public class HCPPutDialog extends BaseStepDialog implements StepDialogInterface 
     wSourceFileField.setText( Const.NVL( input.getSourceFileField(), "" ) );
     wTargetFileField.setText( Const.NVL( input.getTargetFileField(), "" ) );
     wUpdate.setSelection( input.isUpdating() );
-    // wResponseCodeField.setText( Const.NVL( input.getResponseCodeField(), "" ) );
-    // wResponseTimeField.setText( Const.NVL( input.getResponseTimeField(), "" ) );
     wPrependPathField.setText( Const.NVL( input.getPrependPath(), "" ) );
     wBufferSizeField.setText( Const.NVL( input.getBufferSize(), "" ) );
 

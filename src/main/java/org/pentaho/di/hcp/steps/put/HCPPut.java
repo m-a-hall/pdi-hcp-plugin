@@ -111,15 +111,15 @@ public class HCPPut extends BaseStep implements StepInterface {
     if ( first ) {
       first = false;
 
-      data.sourcePathIndex = getInputRowMeta().indexOfValue( meta.getSourceFileField() );
+      data.sourcePathIndex = getInputRowMeta().indexOfValue( environmentSubstitute( meta.getSourceFileField() ) );
       if ( data.sourcePathIndex < 0 ) {
-        throw new KettleException(
-            BaseMessages.getString( PKG, "HCPPut.Error.SourceFileFieldNotFound", meta.getSourceFileField() ) );
+        throw new KettleException( BaseMessages.getString( PKG, "HCPPut.Error.SourceFileFieldNotFound",
+            environmentSubstitute( meta.getSourceFileField() ) ) );
       }
-      data.targetPathIndex = getInputRowMeta().indexOfValue( meta.getTargetFileField() );
+      data.targetPathIndex = getInputRowMeta().indexOfValue( environmentSubstitute( meta.getTargetFileField() ) );
       if ( data.targetPathIndex < 0 ) {
-        throw new KettleException(
-            BaseMessages.getString( PKG, "HCPPut.Error.TargetFileFieldNotFound", meta.getTargetFileField() ) );
+        throw new KettleException( BaseMessages.getString( PKG, "HCPPut.Error.TargetFileFieldNotFound",
+            environmentSubstitute( meta.getTargetFileField() ) ) );
       }
 
       data.outputRowMeta = getInputRowMeta().clone();
@@ -146,7 +146,6 @@ public class HCPPut extends BaseStep implements StepInterface {
     targetFilePath = data.targetPrependPath + targetFilePath;
 
     long startTime = System.currentTimeMillis();
-    int responseCode = -1;
 
     String restUrl = meta.getConnection().getRestUrl( this );
 

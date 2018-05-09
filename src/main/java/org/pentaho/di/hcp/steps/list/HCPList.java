@@ -92,10 +92,10 @@ public class HCPList extends BaseStep implements StepInterface {
     if ( first ) {
       first = false;
 
-      data.sourcePathIndex = getInputRowMeta().indexOfValue( meta.getSourceFileField() );
+      data.sourcePathIndex = getInputRowMeta().indexOfValue( environmentSubstitute( meta.getSourceFileField() ) );
       if ( data.sourcePathIndex < 0 ) {
-        throw new KettleException( BaseMessages
-            .getString( HCPListMeta.PKG, "HCPGet.Error.SourceFileFieldNotFound", meta.getSourceFileField() ) );
+        throw new KettleException( BaseMessages.getString( HCPListMeta.PKG, "HCPGet.Error.SourceFileFieldNotFound",
+            environmentSubstitute( meta.getSourceFileField() ) ) );
       }
 
       data.outputRowMeta = getInputRowMeta().clone();

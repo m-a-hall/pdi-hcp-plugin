@@ -91,10 +91,10 @@ public class HCPDelete extends BaseStep implements StepInterface {
     if ( first ) {
       first = false;
 
-      data.targetPathIndex = getInputRowMeta().indexOfValue( meta.getTargetFileField() );
+      data.targetPathIndex = getInputRowMeta().indexOfValue( environmentSubstitute( meta.getTargetFileField() ) );
       if ( data.targetPathIndex < 0 ) {
-        throw new KettleException(
-            BaseMessages.getString( PKG, "HCPDelete.Error.TargetFileFieldNotFound", meta.getTargetFileField() ) );
+        throw new KettleException( BaseMessages.getString( PKG, "HCPDelete.Error.TargetFileFieldNotFound",
+            environmentSubstitute( meta.getTargetFileField() ) ) );
       }
 
       data.outputRowMeta = getInputRowMeta().clone();

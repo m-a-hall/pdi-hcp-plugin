@@ -65,7 +65,7 @@ public class HCPGet extends BaseStep implements StepInterface {
       log.logError( BaseMessages.getString( PKG, "HCPGet.Error.SourceFileFieldNotSpecified" ) );
       error = true;
     }
-    if ( StringUtils.isEmpty( meta.getTargetFileField() ) && !meta.getFetchSystemMetadataOnly()) {
+    if ( StringUtils.isEmpty( meta.getTargetFileField() ) && !meta.getFetchSystemMetadataOnly() ) {
       log.logError( BaseMessages.getString( PKG, "HCPGet.Error.TargetFileFieldNotSpecified" ) );
       error = true;
     }
@@ -97,15 +97,15 @@ public class HCPGet extends BaseStep implements StepInterface {
     if ( first ) {
       first = false;
 
-      data.sourcePathIndex = getInputRowMeta().indexOfValue( meta.getSourceFileField() );
+      data.sourcePathIndex = getInputRowMeta().indexOfValue( environmentSubstitute( meta.getSourceFileField() ) );
       if ( data.sourcePathIndex < 0 ) {
-        throw new KettleException(
-            BaseMessages.getString( PKG, "HCPGet.Error.SourceFileFieldNotFound", meta.getSourceFileField() ) );
+        throw new KettleException( BaseMessages.getString( PKG, "HCPGet.Error.SourceFileFieldNotFound",
+            environmentSubstitute( meta.getSourceFileField() ) ) );
       }
-      data.targetPathIndex = getInputRowMeta().indexOfValue( meta.getTargetFileField() );
+      data.targetPathIndex = getInputRowMeta().indexOfValue( environmentSubstitute( meta.getTargetFileField() ) );
       if ( data.targetPathIndex < 0 ) {
-        throw new KettleException(
-            BaseMessages.getString( PKG, "HCPGet.Error.TargetFileFieldNotFound", meta.getTargetFileField() ) );
+        throw new KettleException( BaseMessages.getString( PKG, "HCPGet.Error.TargetFileFieldNotFound",
+            environmentSubstitute( meta.getTargetFileField() ) ) );
       }
 
       data.outputRowMeta = getInputRowMeta().clone();
